@@ -70,7 +70,7 @@ function GalleryPage() {
   const lightboxItems = useMemo(() => {
     return allFilteredPhotos.map(p => ({
       id: p.id,
-      src: p.imageUrl,
+      src: p.image_url,
       title: p.title,
       description: p.description
     }));
@@ -178,7 +178,7 @@ function GalleryPage() {
               ) : (
                 <div className="video-grid">
                   {videos.map((video) => {
-                    const isYouTube = video.videoUrl?.includes("youtube.com") || video.videoUrl?.includes("youtu.be");
+                    const isYouTube = video.video_url?.includes("youtube.com") || video.video_url?.includes("youtu.be");
 
                     return (
                       <div key={video.id} className="video-card">
@@ -186,16 +186,16 @@ function GalleryPage() {
                           <iframe
                             width="100%"
                             height="100%"
-                            src={video.videoUrl.replace("watch?v=", "embed/")}
+                            src={video.video_url.replace("watch?v=", "embed/")}
                             title={video.title}
                             frameBorder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowFullScreen
                             style={{ border: "none", aspectRatio: "16/9", width: "100%", height: "auto", display: 'block' }}
                           ></iframe>
-                        ) : video.videoUrl ? (
-                          <video controls playsInline preload="metadata" poster={video.imageUrl} style={{ width: "100%", borderRadius: "8px" }}>
-                            <source src={video.videoUrl} type="video/mp4" />
+                        ) : video.video_url ? (
+                          <video controls playsInline preload="metadata" poster={video.image_url} style={{ width: "100%", borderRadius: "8px" }}>
+                            <source src={video.video_url} type="video/mp4" />
                           </video>
                         ) : (
                           <div className="video-placeholder">Lien indisponible</div>
@@ -241,7 +241,7 @@ function GalleryPage() {
                     onClick={() => openLightboxById(item.id)}
                     style={{ cursor: 'pointer', border: 'none', background: 'transparent', padding: 0 }}
                   >
-                    <img src={item.imageUrl} alt={item.title} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <img src={item.src} alt={item.title} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     <div className="gallery-overlay">
                       <p>{item.title}</p>
                     </div>
