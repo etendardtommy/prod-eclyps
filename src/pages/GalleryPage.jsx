@@ -241,7 +241,7 @@ function GalleryPage() {
                     onClick={() => openLightboxById(item.id)}
                     style={{ cursor: 'pointer', border: 'none', background: 'transparent', padding: 0 }}
                   >
-                    <img src={item.src} alt={item.title} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <img src={item.image_url} alt={item.title} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     <div className="gallery-overlay">
                       <p>{item.title}</p>
                     </div>
