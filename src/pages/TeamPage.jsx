@@ -26,17 +26,15 @@ function TeamPage() {
           <div className="identity-text">
             <h3>Qui sommes-nous?</h3>
             <p>
-              <span>ECLYPS</span> est née en <span>2025</span>.<br />
-              Nous sommes une bande d&apos;amis, nous avons commencé par des
-              sessions fun puis, cela s&apos;est rapidement transformé en une
-              vraie équipe esport compétitive.
+              <span>ECLYPS</span> s&apos;est créée en <span>2025</span>.
+              Avec d&apos;anciens joueurs comme <span>Getty</span> et{" "}
+              <span>Titboyyy</span>, on a fondé une équipe d&apos;amis avec
+              un seul objectif : <span>aller le plus loin possible</span>.
             </p>
             <p>
-              On se retrouve au bar, mais dans l&apos;arène,{" "}
-              <span>on donne tout</span>. C&apos;est ça, l&apos;esprit ECLYPS :
-              une ambiance authentique au service d&apos;un jeu compétitif.
+              Toujours dans la bonne ambiance — on traîne parfois au bar,
+              mais <span>in-game, on se donne pour la victoire</span>. 🙂
             </p>
-            <p></p>
           </div>
           <div className="identity-video">
             {videoItems.length > 0 ? (
