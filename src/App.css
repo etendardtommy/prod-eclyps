@@ -359,7 +359,7 @@ main {
 
 .identity-text p {
     font-size: 0.9rem;
-    color: var(--grey);
+    color: #c0c0c0;
     line-height: 2;
     letter-spacing: 0.5px;
     margin-bottom: 15px;
