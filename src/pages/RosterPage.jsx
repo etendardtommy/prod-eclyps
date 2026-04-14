@@ -37,7 +37,7 @@ function RosterPage() {
     <section className="page-section">
       <div className="page-wrapper">
         <h2 className="page-title">Roster</h2>
-        <p className="page-subtitle">{roster.length} joueurs — Saison 2025</p>
+        <p className="page-subtitle">{roster.length} joueurs — Saison 2026</p>
         <div className="divider"></div>
 
         {loading ? (
