@@ -1,0 +1,119 @@
+/* ── Page de connexion espace stats ECLYPS ─────────────────────────────── */
+
+.stats-login-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0a0a0f;
+  padding: 1rem;
+}
+
+.stats-login-card {
+  background: #111118;
+  border: 1px solid #2a2a3a;
+  border-radius: 12px;
+  padding: 2.5rem 2rem;
+  width: 100%;
+  max-width: 380px;
+  text-align: center;
+  box-shadow: 0 0 40px rgba(99, 102, 241, 0.08);
+}
+
+.stats-login-logo {
+  margin-bottom: 1rem;
+}
+
+.stats-login-logo img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+
+.stats-login-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #fff;
+  margin: 0 0 0.25rem;
+}
+
+.stats-login-subtitle {
+  color: #6b7280;
+  font-size: 0.85rem;
+  margin: 0 0 2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.stats-login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.stats-login-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  text-align: left;
+}
+
+.stats-login-field label {
+  font-size: 0.8rem;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.stats-login-field input {
+  background: #1a1a25;
+  border: 1px solid #2a2a3a;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  color: #fff;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.stats-login-field input:focus {
+  border-color: #6366f1;
+}
+
+.stats-login-field input::placeholder {
+  color: #4b5563;
+}
+
+.stats-login-error {
+  color: #ef4444;
+  font-size: 0.85rem;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+.stats-login-btn {
+  background: #6366f1;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.85rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, opacity 0.2s;
+  margin-top: 0.5rem;
+  letter-spacing: 0.04em;
+}
+
+.stats-login-btn:hover:not(:disabled) {
+  background: #4f46e5;
+}
+
+.stats-login-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

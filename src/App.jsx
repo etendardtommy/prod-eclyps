@@ -12,7 +12,54 @@ import NotFoundPage from "./pages/NotFoundPage";
 import MentionsLegales from "./pages/MentionsLegales";
 import PolitiqueConfidentialite from "./pages/PolitiqueConfidentialite";
 
+// Espace privé stats équipe
+import { StatsAuthProvider, useStatsAuth } from "./contexts/StatsAuthContext";
+import LoginPage from "./pages/stats/LoginPage";
+import StatsPage from "./pages/stats/StatsPage";
+
+/**
+ * Détecte si on est sur le sous-domaine stats.eclyps-esport.fr.
+ * En local (localhost), on peut forcer le mode stats via ?stats=1 dans l'URL.
+ */
+function isStatsDomain() {
+  const host = window.location.hostname;
+  return (
+    host === "stats.eclyps-esport.fr" ||
+    new URLSearchParams(window.location.search).get("stats") === "1"
+  );
+}
+
+/**
+ * App stats : affiche login ou dashboard selon l'état de connexion.
+ * Le StatsAuthProvider gère la vérification du cookie au chargement.
+ */
+function StatsApp() {
+  const { user, loading } = useStatsAuth();
+
+  // Pendant la vérification initiale du cookie, on n'affiche rien
+  // (évite un flash de la page login si le joueur est déjà connecté)
+  if (loading) {
+    return (
+      <div style={{ minHeight: "100vh", background: "#0a0a0f", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <span style={{ color: "#4b5563", fontSize: "0.9rem" }}>Chargement…</span>
+      </div>
+    );
+  }
+
+  return user ? <StatsPage /> : <LoginPage />;
+}
+
 function App() {
+  // Si on est sur le sous-domaine stats → afficher l'espace équipe
+  if (isStatsDomain()) {
+    return (
+      <StatsAuthProvider>
+        <StatsApp />
+      </StatsAuthProvider>
+    );
+  }
+
+  // Sinon → site public ECLYPS normal
   return (
     <BrowserRouter>
       <ErrorBoundary>

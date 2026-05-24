@@ -1,0 +1,355 @@
+/* ── Espace stats ECLYPS ── */
+
+.stats-page {
+  min-height: 100vh;
+  background: #0a0a0f;
+  color: #e5e7eb;
+  font-family: inherit;
+}
+
+/* Header */
+.stats-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background: #111118;
+  border-bottom: 1px solid #1e1e2e;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.stats-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.stats-header-logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.stats-header-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #fff;
+  margin: 0;
+}
+
+.stats-header-sub {
+  font-size: 0.72rem;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0;
+}
+
+.stats-header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.stats-user-badge {
+  font-size: 0.82rem;
+  color: #9ca3af;
+  background: #1a1a25;
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  border: 1px solid #2a2a3a;
+}
+
+.stats-logout-btn {
+  background: transparent;
+  border: 1px solid #374151;
+  color: #9ca3af;
+  border-radius: 6px;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.stats-logout-btn:hover {
+  color: #ef4444;
+  border-color: #ef4444;
+}
+
+/* Main */
+.stats-main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Cards résumé */
+.stats-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+}
+
+.stats-summary-card {
+  background: #111118;
+  border: 1px solid #1e1e2e;
+  border-radius: 10px;
+  padding: 1.2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.stats-summary-card.win {
+  border-color: rgba(34, 197, 94, 0.2);
+}
+
+.summary-label {
+  font-size: 0.75rem;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.summary-value {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+}
+
+.summary-date {
+  font-size: 1.2rem;
+}
+
+/* Section tableau */
+.stats-table-section {
+  background: #111118;
+  border: 1px solid #1e1e2e;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.stats-table-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #1e1e2e;
+}
+
+.stats-table-header h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 0.25rem;
+}
+
+.stats-table-info {
+  font-size: 0.78rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.stats-table-info a {
+  color: #6366f1;
+  text-decoration: none;
+}
+
+/* Skeletons de chargement */
+.stats-skeleton-list {
+  padding: 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.stats-skeleton-row {
+  height: 44px;
+  background: linear-gradient(90deg, #1a1a25 25%, #22222f 50%, #1a1a25 75%);
+  background-size: 200% 100%;
+  border-radius: 6px;
+  animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Erreur / vide */
+.stats-error,
+.stats-empty {
+  padding: 2rem 1.5rem;
+  color: #9ca3af;
+  font-size: 0.9rem;
+}
+
+.stats-error {
+  color: #ef4444;
+}
+
+.stats-error button {
+  background: none;
+  border: none;
+  color: #6366f1;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.stats-empty code {
+  background: #1a1a25;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.82rem;
+}
+
+/* Tableau */
+.stats-table-wrapper {
+  overflow-x: auto;
+}
+
+.stats-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.stats-table thead th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.75rem;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid #1e1e2e;
+  white-space: nowrap;
+}
+
+.stats-table thead th.sortable {
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.15s;
+}
+
+.stats-table thead th.sortable:hover {
+  color: #d1d5db;
+}
+
+.stats-table thead th.active {
+  color: #6366f1;
+}
+
+.sort-icon {
+  font-size: 0.7rem;
+  opacity: 0.7;
+}
+
+.col-rank {
+  width: 36px;
+  text-align: center !important;
+  color: #4b5563 !important;
+  font-size: 0.78rem;
+}
+
+.stats-row {
+  border-bottom: 1px solid #1a1a25;
+  transition: background 0.15s;
+}
+
+.stats-row:last-child {
+  border-bottom: none;
+}
+
+.stats-row:hover {
+  background: #14141e;
+}
+
+.stats-row.is-me {
+  background: rgba(99, 102, 241, 0.06);
+}
+
+.stats-row.is-me .col-name .player-name {
+  color: #818cf8;
+}
+
+.stats-table tbody td {
+  padding: 0.85rem 1rem;
+  color: #d1d5db;
+}
+
+.col-name {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.player-name {
+  font-weight: 600;
+  color: #f3f4f6;
+}
+
+.player-eva-link {
+  color: #4b5563;
+  font-size: 0.75rem;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.player-eva-link:hover {
+  color: #6366f1;
+}
+
+.col-win {
+  color: #22c55e;
+  font-weight: 600;
+}
+
+.col-loss {
+  color: #ef4444;
+  font-weight: 600;
+}
+
+/* Barre de win rate */
+.winrate-bar-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 120px;
+}
+
+.winrate-bar {
+  height: 6px;
+  background: #6366f1;
+  border-radius: 3px;
+  flex-shrink: 0;
+  transition: width 0.3s ease;
+}
+
+.winrate-label {
+  font-size: 0.82rem;
+  color: #9ca3af;
+  min-width: 36px;
+}
+
+/* Responsive mobile */
+@media (max-width: 600px) {
+  .stats-header {
+    padding: 0.75rem 1rem;
+  }
+
+  .stats-user-badge {
+    display: none;
+  }
+
+  .stats-main {
+    padding: 1rem;
+  }
+
+  .stats-summary {
+    grid-template-columns: 1fr 1fr;
+  }
+}
