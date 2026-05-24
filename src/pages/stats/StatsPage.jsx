@@ -31,13 +31,14 @@ function StatCard({ label, value, sub, accent }) {
 
 function KdCircle({ kd }) {
   if (kd == null) return <div className="kd-circle empty">—</div>;
-  const color = kd >= 1.5 ? "#22c55e" : kd >= 1 ? "#6366f1" : "#ef4444";
+  // Or (elite) → argent (positif) → gris (négatif) — palette ECLYPS
+  const color = kd >= 1.5 ? "#d4af37" : kd >= 1 ? "#c0c0c0" : "#888888";
   const pct = Math.min(kd / 3, 1); // cercle plein à KD=3
   const dash = 2 * Math.PI * 38; // circumférence r=38
   return (
     <div className="kd-circle">
       <svg viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="38" fill="none" stroke="#1e1e2e" strokeWidth="8" />
+        <circle cx="50" cy="50" r="38" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="8" />
         <circle
           cx="50" cy="50" r="38" fill="none"
           stroke={color} strokeWidth="8"

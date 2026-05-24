@@ -1,49 +1,73 @@
 /* ── Page de connexion espace stats ECLYPS ─────────────────────────────── */
 
+/* Reset : neutralise App.css (Rajdhani forcé, uppercase, letter-spacing) */
+.stats-login-wrapper,
+.stats-login-wrapper * {
+  font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  text-transform: none;
+  letter-spacing: normal;
+  box-sizing: border-box;
+}
+
 .stats-login-wrapper {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #0a0a0f;
+  background: #050505;
   padding: 1rem;
 }
 
 .stats-login-card {
-  background: #111118;
-  border: 1px solid #2a2a3a;
-  border-radius: 12px;
-  padding: 2.5rem 2rem;
+  background: rgba(10, 10, 10, 0.85);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 3rem 2.5rem;
   width: 100%;
   max-width: 380px;
   text-align: center;
-  box-shadow: 0 0 40px rgba(99, 102, 241, 0.08);
+  box-shadow: 0 0 40px rgba(212, 175, 55, 0.05);
 }
 
 .stats-login-logo {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .stats-login-logo img {
   width: 64px;
   height: 64px;
   object-fit: contain;
+  margin: 0 auto;
 }
 
+/* Titre ECLYPS — identique au logo du header principal */
 .stats-login-title {
-  font-size: 1.8rem;
+  font-family: "Rajdhani", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  font-size: 2rem;
   font-weight: 800;
-  letter-spacing: 0.12em;
-  color: #fff;
-  margin: 0 0 0.25rem;
+  letter-spacing: 6px !important;
+  text-transform: uppercase !important;
+  color: #d4af37;
+  text-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
+  margin: 0 0 0.3rem;
 }
 
 .stats-login-subtitle {
-  color: #6b7280;
-  font-size: 0.85rem;
-  margin: 0 0 2rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  font-size: 0.68rem;
+  letter-spacing: 4px !important;
+  text-transform: uppercase !important;
+  color: #888888;
+  margin: 0 0 2.5rem;
+}
+
+/* Séparateur or */
+.stats-login-divider {
+  width: 40px;
+  height: 1px;
+  background: #d4af37;
+  opacity: 0.4;
+  margin: 0 auto 2rem;
 }
 
 .stats-login-form {
@@ -60,60 +84,61 @@
 }
 
 .stats-login-field label {
-  font-size: 0.8rem;
-  color: #9ca3af;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  font-size: 0.65rem;
+  letter-spacing: 3px !important;
+  text-transform: uppercase !important;
+  color: #d4af37;
 }
 
 .stats-login-field input {
-  background: #1a1a25;
-  border: 1px solid #2a2a3a;
-  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  border-radius: 0;
   padding: 0.75rem 1rem;
-  color: #fff;
-  font-size: 0.95rem;
+  color: #ffffff;
+  font-size: 0.9rem;
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .stats-login-field input:focus {
-  border-color: #6366f1;
+  border-color: rgba(212, 175, 55, 0.6);
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.08);
 }
 
 .stats-login-field input::placeholder {
-  color: #4b5563;
+  color: rgba(255, 255, 255, 0.15);
 }
 
 .stats-login-error {
-  color: #ef4444;
-  font-size: 0.85rem;
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.2);
-  border-radius: 6px;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+  color: #888888;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   padding: 0.5rem 0.75rem;
   text-align: left;
 }
 
 .stats-login-btn {
-  background: #6366f1;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 0.85rem;
-  font-size: 0.95rem;
+  background: transparent;
+  border: 1px solid #d4af37;
+  color: #d4af37;
+  padding: 0.9rem;
+  font-size: 0.75rem;
   font-weight: 600;
+  letter-spacing: 4px !important;
+  text-transform: uppercase !important;
   cursor: pointer;
-  transition: background 0.2s, opacity 0.2s;
+  transition: all 0.3s ease;
   margin-top: 0.5rem;
-  letter-spacing: 0.04em;
 }
 
 .stats-login-btn:hover:not(:disabled) {
-  background: #4f46e5;
+  background: rgba(212, 175, 55, 0.08);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
 }
 
 .stats-login-btn:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
 }

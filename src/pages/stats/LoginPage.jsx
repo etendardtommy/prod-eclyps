@@ -32,6 +32,7 @@ export default function LoginPage() {
 
         <h1 className="stats-login-title">ECLYPS</h1>
         <p className="stats-login-subtitle">Espace équipe — Accès privé</p>
+        <div className="stats-login-divider" />
 
         <form onSubmit={handleSubmit} className="stats-login-form">
           <div className="stats-login-field">
