@@ -85,6 +85,46 @@
   padding: 2.5rem 1.5rem;
 }
 
+/* ── Barre de tri ────────────────────────────────────────────────────────── */
+.stats-sort-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.stats-sort-label {
+  font-size: 0.62rem;
+  color: #888888;
+  letter-spacing: 3px !important;
+  text-transform: uppercase !important;
+  margin-right: 0.25rem;
+}
+
+.stats-sort-btn {
+  background: transparent;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  color: #888888;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.65rem;
+  letter-spacing: 2px !important;
+  text-transform: uppercase !important;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.stats-sort-btn:hover {
+  border-color: rgba(212, 175, 55, 0.5);
+  color: #d4af37;
+}
+
+.stats-sort-btn.active {
+  border-color: #d4af37;
+  color: #d4af37;
+  background: rgba(212, 175, 55, 0.06);
+}
+
 /* ── Grille de cards ─────────────────────────────────────────────────────── */
 .players-grid {
   display: grid;
@@ -283,6 +323,16 @@
   font-size: 0.88rem;
   font-weight: 600;
   color: #ffffff;
+}
+
+/* ── Label de dernière synchro ───────────────────────────────────────────── */
+.player-card-sync {
+  font-size: 0.58rem;
+  color: rgba(212, 175, 55, 0.35);
+  letter-spacing: 1.5px !important;
+  text-transform: uppercase !important;
+  text-align: right;
+  padding: 0.4rem 0.75rem 0.6rem;
 }
 
 /* ── Sans stats in-game ──────────────────────────────────────────────────── */

@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useStatsAuth } from "../../contexts/StatsAuthContext";
 import "./StatsPage.css";
 
 const API = import.meta.env.VITE_API_URL;
 
-// Formate les secondes en "Xh Ymin"
+// ── Helpers de formatage ──────────────────────────────────────────────────────
+
 function formatTime(seconds) {
   if (!seconds) return "—";
   const h = Math.floor(seconds / 3600);
@@ -13,11 +14,34 @@ function formatTime(seconds) {
   return `${h}h${m > 0 ? ` ${m}min` : ""}`;
 }
 
-// Formate les mètres en km
 function formatDistance(meters) {
   if (!meters) return "—";
   return `${(meters / 1000).toFixed(1)} km`;
 }
+
+// "il y a 3h" / "il y a 2j" à partir d'une date ISO
+function formatRelativeTime(isoString) {
+  if (!isoString) return null;
+  const diffMs = Date.now() - new Date(isoString).getTime();
+  const diffMin = Math.floor(diffMs / 60000);
+  if (diffMin < 2) return "à l'instant";
+  if (diffMin < 60) return `il y a ${diffMin}min`;
+  const diffH = Math.floor(diffMin / 60);
+  if (diffH < 24) return `il y a ${diffH}h`;
+  const diffD = Math.floor(diffH / 24);
+  return `il y a ${diffD}j`;
+}
+
+// ── Options de tri ────────────────────────────────────────────────────────────
+
+const SORT_OPTIONS = [
+  { value: "kd",     label: "K/D",     get: (p) => p.kd_ratio ?? -1 },
+  { value: "kills",  label: "Kills",   get: (p) => p.kills ?? -1 },
+  { value: "wins",   label: "Victoires circuit", get: (p) => p.wins ?? -1 },
+  { value: "games",  label: "Parties", get: (p) => p.game_count ?? -1 },
+];
+
+// ── Composants ────────────────────────────────────────────────────────────────
 
 function StatCard({ label, value, sub, accent }) {
   return (
@@ -34,7 +58,7 @@ function KdCircle({ kd }) {
   // Or (elite) → argent (positif) → gris (négatif) — palette ECLYPS
   const color = kd >= 1.5 ? "#d4af37" : kd >= 1 ? "#c0c0c0" : "#888888";
   const pct = Math.min(kd / 3, 1); // cercle plein à KD=3
-  const dash = 2 * Math.PI * 38; // circumférence r=38
+  const dash = 2 * Math.PI * 38;   // circonférence r=38
   return (
     <div className="kd-circle">
       <svg viewBox="0 0 100 100">
@@ -61,6 +85,7 @@ function PlayerCard({ player, isMe }) {
   const appUrl = player.eva_app_username
     ? `https://app.eva.gg/profile/public/${player.eva_app_username}`
     : null;
+  const syncLabel = formatRelativeTime(player.synced_at);
 
   return (
     <div className={`player-card ${isMe ? "is-me" : ""}`}>
@@ -88,9 +113,9 @@ function PlayerCard({ player, isMe }) {
           <div className="player-card-main">
             {/* Colonne gauche */}
             <div className="player-main-stats">
-              <StatCard label="Parties" value={player.game_count} />
-              <StatCard label="Victoires" value={player.game_victories} accent />
-              <StatCard label="Défaites" value={player.game_defeats} />
+              <StatCard label="Parties"     value={player.game_count} />
+              <StatCard label="Victoires"   value={player.game_victories} accent />
+              <StatCard label="Défaites"    value={player.game_defeats} />
               <StatCard label="Temps de jeu" value={formatTime(player.game_time)} />
             </div>
 
@@ -99,9 +124,9 @@ function PlayerCard({ player, isMe }) {
 
             {/* Colonne droite */}
             <div className="player-main-stats right">
-              <StatCard label="Kills" value={player.kills?.toLocaleString()} accent />
-              <StatCard label="Morts" value={player.deaths?.toLocaleString()} />
-              <StatCard label="Assists" value={player.assists?.toLocaleString()} />
+              <StatCard label="Kills"           value={player.kills?.toLocaleString()} accent />
+              <StatCard label="Morts"           value={player.deaths?.toLocaleString()} />
+              <StatCard label="Assists"         value={player.assists?.toLocaleString()} />
               <StatCard label="Meilleure série" value={player.best_kill_streak} />
             </div>
           </div>
@@ -125,19 +150,24 @@ function PlayerCard({ player, isMe }) {
               <strong>{player.tournaments_played}</strong>
             </div>
             <div className="player-footer-stat">
-              <span>Matchs compét. (V/D)</span>
+              <span>Matchs compét.</span>
               <strong>{player.wins}V / {player.losses}D</strong>
             </div>
           </div>
+
+          {/* Dernière synchronisation */}
+          {syncLabel && (
+            <div className="player-card-sync">Synchro {syncLabel}</div>
+          )}
         </div>
       ) : (
         /* Pas encore de stats in-game */
         <div className="player-card-body no-ingame">
           <div className="player-circuit-stats">
-            <StatCard label="Tournois" value={player.tournaments_played} />
+            <StatCard label="Tournois"  value={player.tournaments_played} />
             <StatCard label="Victoires" value={player.wins} accent />
-            <StatCard label="Défaites" value={player.losses} />
-            <StatCard label="Win rate" value={`${player.win_rate.toFixed(0)}%`} />
+            <StatCard label="Défaites"  value={player.losses} />
+            <StatCard label="Win rate"  value={`${player.win_rate.toFixed(0)}%`} />
           </div>
           <p className="no-ingame-msg">
             Stats in-game non disponibles — pseudo EVA app non configuré
@@ -148,11 +178,14 @@ function PlayerCard({ player, isMe }) {
   );
 }
 
+// ── Page principale ───────────────────────────────────────────────────────────
+
 export default function StatsPage() {
   const { user, logout } = useStatsAuth();
-  const [players, setPlayers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [players, setPlayers]   = useState([]);
+  const [loading, setLoading]   = useState(true);
+  const [error, setError]       = useState(null);
+  const [sortBy, setSortBy]     = useState("kd");
 
   useEffect(() => {
     fetch(`${API}/eclyps/players/`, { credentials: "include" })
@@ -161,6 +194,13 @@ export default function StatsPage() {
       .catch(() => setError("Impossible de charger les stats."))
       .finally(() => setLoading(false));
   }, []);
+
+  // Tri côté client — recalculé uniquement quand players ou sortBy changent
+  const sortedPlayers = useMemo(() => {
+    const opt = SORT_OPTIONS.find((o) => o.value === sortBy);
+    if (!opt) return players;
+    return [...players].sort((a, b) => opt.get(b) - opt.get(a));
+  }, [players, sortBy]);
 
   return (
     <div className="stats-page">
@@ -181,6 +221,22 @@ export default function StatsPage() {
       </header>
 
       <main className="stats-main">
+        {/* Barre de tri */}
+        {!loading && !error && players.length > 0 && (
+          <div className="stats-sort-bar">
+            <span className="stats-sort-label">Trier par</span>
+            {SORT_OPTIONS.map((opt) => (
+              <button
+                key={opt.value}
+                className={`stats-sort-btn ${sortBy === opt.value ? "active" : ""}`}
+                onClick={() => setSortBy(opt.value)}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        )}
+
         {loading && (
           <div className="stats-skeleton-list">
             {[1, 2, 3, 4, 5].map((i) => <div key={i} className="stats-skeleton-card" />)}
@@ -188,14 +244,15 @@ export default function StatsPage() {
         )}
 
         {error && (
-          <div className="stats-error">⚠ {error}
+          <div className="stats-error">
+            ⚠ {error}
             <button onClick={() => window.location.reload()}>Réessayer</button>
           </div>
         )}
 
         {!loading && !error && (
           <div className="players-grid">
-            {players.map((p) => (
+            {sortedPlayers.map((p) => (
               <PlayerCard
                 key={p.id}
                 player={p}
