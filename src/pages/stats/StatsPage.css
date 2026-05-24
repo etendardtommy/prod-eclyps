@@ -93,6 +93,12 @@
   border: 1px solid rgba(99,102,241,0.3);
   border-radius: 10px; padding: 0.15rem 0.6rem;
 }
+.player-card-season {
+  font-size: 0.72rem; font-weight: 600;
+  background: rgba(251,191,36,0.1); color: #fbbf24;
+  border: 1px solid rgba(251,191,36,0.25);
+  border-radius: 10px; padding: 0.15rem 0.6rem;
+}
 
 /* ── Corps de la card ────────────────────────────────────────────────────── */
 .player-card-body { padding: 1rem 1.25rem 0; }

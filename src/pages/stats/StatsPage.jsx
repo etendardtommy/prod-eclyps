@@ -73,7 +73,12 @@ function PlayerCard({ player, isMe }) {
             </a>
           )}
         </div>
-        {isMe && <span className="player-card-me">Vous</span>}
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          {player.season_number && (
+            <span className="player-card-season">S{player.season_number}</span>
+          )}
+          {isMe && <span className="player-card-me">Vous</span>}
+        </div>
       </div>
 
       {/* Stats in-game */}
