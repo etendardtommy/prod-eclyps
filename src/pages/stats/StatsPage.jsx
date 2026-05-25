@@ -109,64 +109,99 @@ function formatDuration(seconds) {
   return `${m}:${String(s).padStart(2, "0")}`;
 }
 
-// ── Table des dernières parties ───────────────────────────────────────────────
+// ── Modal plein écran — Dernières parties ────────────────────────────────────
 
-function GamesPanel({ playerId, evaUserId }) {
-  const [games, setGames]   = useState(null);
+function GamesModal({ player, onClose }) {
+  const [games, setGames]     = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError]   = useState(null);
+  const [error, setError]     = useState(null);
 
   useEffect(() => {
-    fetch(`${API}/eclyps/players/${playerId}/games`, { credentials: "include" })
+    fetch(`${API}/eclyps/players/${player.id}/games`, { credentials: "include" })
       .then((r) => { if (!r.ok) throw new Error(); return r.json(); })
       .then(setGames)
       .catch(() => setError(true))
       .finally(() => setLoading(false));
-  }, [playerId]);
 
-  if (loading) return <div className="history-loading">Chargement des parties…</div>;
-  if (error)   return <div className="history-empty">Impossible de charger les parties.</div>;
-  if (!games || games.length === 0)
-    return <div className="history-empty">Aucune partie disponible pour cette saison.</div>;
+    // Bloquer le scroll du body pendant l'ouverture
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, [player.id]);
+
+  // Fermer sur Echap
+  useEffect(() => {
+    const handler = (e) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [onClose]);
 
   return (
-    <div className="games-panel">
-      <div className="games-table-header">
-        <span>Mode</span>
-        <span>Joueurs</span>
-        <span>Carte</span>
-        <span>K / D / A</span>
-        <span>Résultat</span>
-        <span>Durée</span>
-        <span>Date</span>
-      </div>
-      {games.map((g) => {
-        const date = g.date ? new Date(g.date) : null;
-        const isWin  = g.outcome === "Victory";
-        const isLoss = g.outcome === "Defeat";
-        return (
-          <div key={g.id} className={`games-table-row ${isWin ? "win" : isLoss ? "loss" : ""}`}>
-            <span className="games-mode">{translateMode(g.mode)}</span>
-            <span>{g.nb_players ?? "—"}</span>
-            <span className="games-map">{g.map ?? "—"}</span>
-            <span className="games-kda">
-              <strong>{g.kills ?? "—"}</strong>
-              <span className="games-kda-sep">/</span>
-              <span className="games-deaths">{g.deaths ?? "—"}</span>
-              <span className="games-kda-sep">/</span>
-              <span>{g.assists ?? "—"}</span>
-            </span>
-            <span className={`games-outcome ${isWin ? "win" : isLoss ? "loss" : ""}`}>
-              {translateOutcome(g.outcome)}
-            </span>
-            <span className="games-duration">{formatDuration(g.duration)}</span>
-            <span className="games-date">
-              {date ? date.toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit" }) : "—"}
-              <small>{date ? date.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }) : ""}</small>
-            </span>
+    <div className="games-modal-overlay" onClick={onClose}>
+      <div className="games-modal" onClick={(e) => e.stopPropagation()}>
+        {/* En-tête modal */}
+        <div className="games-modal-header">
+          <div className="games-modal-title">
+            DERNIÈRES PARTIES&nbsp;: <span>AFTER-H</span>
           </div>
-        );
-      })}
+          <div className="games-modal-player">{player.player_name}</div>
+          <button className="games-modal-close" onClick={onClose}>✕</button>
+        </div>
+
+        {/* Contenu */}
+        {loading && <div className="games-modal-state">Chargement…</div>}
+        {error   && <div className="games-modal-state">Impossible de charger les parties.</div>}
+        {!loading && !error && (!games || games.length === 0) && (
+          <div className="games-modal-state">Aucune partie disponible pour cette saison.</div>
+        )}
+
+        {!loading && !error && games && games.length > 0 && (
+          <div className="games-table-wrap">
+            {/* En-têtes */}
+            <div className="games-thead">
+              <span>Mode</span>
+              <span>Joueurs</span>
+              <span>Carte</span>
+              <span>K / D / A</span>
+              <span>Résultat</span>
+              <span>Date</span>
+              <span>Heure</span>
+            </div>
+
+            {/* Lignes */}
+            {games.map((g) => {
+              const date  = g.date ? new Date(g.date) : null;
+              const isWin = g.outcome === "Victory";
+              return (
+                <div key={g.id} className={`games-row ${isWin ? "win" : "loss"}`}>
+                  <span className="games-cell-mode">{translateMode(g.mode)}</span>
+                  <span className="games-cell-center">{g.nb_players ?? "—"}</span>
+                  <span className="games-cell-map">{g.map ?? "—"}</span>
+                  <span className="games-cell-kda">
+                    <strong>{g.kills ?? "—"}</strong>
+                    {" / "}
+                    <span className="games-deaths">{g.deaths ?? "—"}</span>
+                    {" / "}
+                    <span>{g.assists ?? "—"}</span>
+                  </span>
+                  <span className={`games-cell-outcome ${isWin ? "win" : "loss"}`}>
+                    {translateOutcome(g.outcome)}
+                  </span>
+                  <span className="games-cell-date">
+                    {date
+                      ? date.toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "numeric" })
+                      : "—"}
+                  </span>
+                  <span className="games-cell-time">
+                    {date
+                      ? date.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })
+                      : "—"}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
@@ -249,18 +284,13 @@ function HistoryPanel({ playerId }) {
 // ── Card joueur ───────────────────────────────────────────────────────────────
 
 function PlayerCard({ player, isMe }) {
-  const hasIngame    = player.kills != null;
-  const hasGames     = player.eva_app_user_id != null;
-  const appUrl       = player.eva_app_username
+  const hasIngame  = player.kills != null;
+  const hasGames   = player.eva_app_user_id != null;
+  const appUrl     = player.eva_app_username
     ? `https://app.eva.gg/profile/public/${player.eva_app_username}`
     : null;
-  const syncLabel    = formatRelativeTime(player.synced_at);
-  // "games" | "history" | null
-  const [activePanel, setActivePanel] = useState(null);
-
-  function togglePanel(name) {
-    setActivePanel((v) => (v === name ? null : name));
-  }
+  const syncLabel  = formatRelativeTime(player.synced_at);
+  const [showGamesModal, setShowGamesModal] = useState(false);
 
   return (
     <div className={`player-card ${isMe ? "is-me" : ""}`}>
@@ -287,9 +317,9 @@ function PlayerCard({ player, isMe }) {
         <div className="player-card-body">
           <div className="player-card-main">
             <div className="player-main-stats">
-              <StatCard label="Parties"     value={player.game_count} />
-              <StatCard label="Victoires"   value={player.game_victories} accent />
-              <StatCard label="Défaites"    value={player.game_defeats} />
+              <StatCard label="Parties"      value={player.game_count} />
+              <StatCard label="Victoires"    value={player.game_victories} accent />
+              <StatCard label="Défaites"     value={player.game_defeats} />
               <StatCard label="Temps de jeu" value={formatTime(player.game_time)} />
             </div>
             <KdCircle kd={player.kd_ratio} />
@@ -324,30 +354,23 @@ function PlayerCard({ player, isMe }) {
             </div>
           </div>
 
-          {/* Barre inférieure : synchro + boutons de panneau */}
-          <div className="player-card-actions">
-            {syncLabel && <span className="player-card-sync">Synchro {syncLabel}</span>}
-            <div className="player-card-btns">
-              {hasGames && (
-                <button
-                  className={`history-toggle-btn ${activePanel === "games" ? "active" : ""}`}
-                  onClick={() => togglePanel("games")}
-                >
-                  Dernières parties
-                </button>
-              )}
+          {/* Barre inférieure : synchro + bouton dernières parties */}
+          {hasGames && (
+            <div className="player-card-actions">
+              {syncLabel && <span className="player-card-sync">Synchro {syncLabel}</span>}
               <button
-                className={`history-toggle-btn ${activePanel === "history" ? "active" : ""}`}
-                onClick={() => togglePanel("history")}
+                className="history-toggle-btn"
+                onClick={() => setShowGamesModal(true)}
               >
-                Progression
+                Dernières parties
               </button>
             </div>
-          </div>
+          )}
 
-          {/* Panneaux (lazy-loaded au clic) */}
-          {activePanel === "games"   && <GamesPanel   playerId={player.id} />}
-          {activePanel === "history" && <HistoryPanel playerId={player.id} />}
+          {/* Modal plein écran */}
+          {showGamesModal && (
+            <GamesModal player={player} onClose={() => setShowGamesModal(false)} />
+          )}
         </div>
       ) : (
         <div className="player-card-body no-ingame">

@@ -481,130 +481,181 @@
   font-style: italic;
 }
 
-/* ── Groupe de boutons d'action ──────────────────────────────────────────── */
-.player-card-btns {
+/* ── Modal overlay — Dernières parties ──────────────────────────────────── */
+.games-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 100;
   display: flex;
-  gap: 0.4rem;
-}
-
-/* ── Tableau des dernières parties ───────────────────────────────────────── */
-.games-panel {
-  border-top: 1px solid rgba(212, 175, 55, 0.07);
-  background: rgba(0, 0, 0, 0.25);
-  padding: 0 0 0.5rem;
-  overflow-x: auto;
-}
-
-.games-table-header,
-.games-table-row {
-  display: grid;
-  grid-template-columns: 14% 7% 17% 17% 14% 11% 20%;
   align-items: center;
-  gap: 0;
-  padding: 0.45rem 1rem;
+  justify-content: center;
+  padding: 1.5rem;
 }
 
-.games-table-header {
-  border-bottom: 1px solid rgba(212, 175, 55, 0.1);
-  background: rgba(212, 175, 55, 0.03);
+.games-modal {
+  background: #0a0a0a;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  width: 100%;
+  max-width: 860px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 0 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(212, 175, 55, 0.05);
 }
 
-.games-table-header span {
-  font-size: 0.56rem;
+/* En-tête de la modal */
+.games-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.75rem 1rem;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.12);
+  flex-shrink: 0;
+  gap: 1rem;
+}
+
+.games-modal-title {
+  font-family: "Rajdhani", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 4px !important;
+  text-transform: uppercase !important;
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+  line-height: 1;
+}
+
+.games-modal-title span {
+  color: #d4af37;
+}
+
+.games-modal-player {
+  font-family: "Rajdhani", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  font-size: 0.75rem;
+  color: rgba(212, 175, 55, 0.5);
+  letter-spacing: 3px !important;
+  text-transform: uppercase !important;
+  flex: 1;
+  text-align: right;
+}
+
+.games-modal-close {
+  background: transparent;
+  border: 1px solid rgba(212, 175, 55, 0.2);
   color: #888888;
+  width: 32px;
+  height: 32px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.games-modal-close:hover {
+  border-color: rgba(212, 175, 55, 0.6);
+  color: #d4af37;
+}
+
+.games-modal-state {
+  padding: 3rem 2rem;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #888888;
+  letter-spacing: 1px;
+}
+
+/* Zone scrollable du tableau */
+.games-table-wrap {
+  overflow-y: auto;
+  overflow-x: auto;
+  flex: 1;
+}
+
+/* En-tête du tableau */
+.games-thead,
+.games-row {
+  display: grid;
+  grid-template-columns: 15% 8% 17% 15% 14% 16% 15%;
+  align-items: center;
+  min-width: 580px;
+}
+
+.games-thead {
+  position: sticky;
+  top: 0;
+  background: #0a0a0a;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+  padding: 0.6rem 1.75rem;
+  z-index: 1;
+}
+
+.games-thead span {
+  font-family: "Rajdhani", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #d4af37;
   letter-spacing: 2px !important;
   text-transform: uppercase !important;
-  font-weight: 600;
 }
 
-.games-table-row {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+/* Lignes du tableau */
+.games-row {
+  padding: 0.65rem 1.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
   transition: background 0.15s ease;
 }
 
-.games-table-row:hover {
-  background: rgba(255, 255, 255, 0.025);
+.games-row:hover {
+  background: rgba(255, 255, 255, 0.03);
 }
 
-.games-table-row:last-child {
-  border-bottom: none;
+.games-row:last-child { border-bottom: none; }
+
+/* Cellules */
+.games-cell-mode {
+  font-size: 0.8rem;
+  color: #e0e0e0;
 }
 
-/* Coloration de la ligne selon le résultat */
-.games-table-row.win {
-  border-left: 2px solid rgba(212, 175, 55, 0.5);
-}
-
-.games-table-row.loss {
-  border-left: 2px solid rgba(136, 136, 136, 0.3);
-}
-
-/* Mode */
-.games-mode {
-  font-size: 0.68rem;
+.games-cell-center {
+  font-size: 0.8rem;
   color: #c0c0c0;
-  letter-spacing: 0.5px;
+  text-align: center;
 }
 
-/* Carte */
-.games-map {
-  font-size: 0.7rem;
-  color: #c0c0c0;
+.games-cell-map {
+  font-size: 0.8rem;
+  color: #e0e0e0;
 }
 
-/* K/D/A */
-.games-kda {
-  display: flex;
-  align-items: center;
-  gap: 0.15rem;
-  font-size: 0.75rem;
-}
-
-.games-kda strong {
-  color: #d4af37;
-  font-weight: 700;
-}
-
-.games-kda-sep {
-  color: rgba(255, 255, 255, 0.2);
-  font-size: 0.65rem;
-}
-
-.games-deaths {
-  color: #888888;
-}
-
-/* Résultat */
-.games-outcome {
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 1.5px !important;
-  text-transform: uppercase !important;
-}
-
-.games-outcome.win  { color: #d4af37; }
-.games-outcome.loss { color: #888888; }
-
-/* Durée */
-.games-duration {
-  font-size: 0.68rem;
-  color: #888888;
+.games-cell-kda {
+  font-size: 0.82rem;
+  color: #e0e0e0;
   font-variant-numeric: tabular-nums;
 }
 
-/* Date */
-.games-date {
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
-  font-size: 0.68rem;
+.games-cell-kda strong { color: #d4af37; font-weight: 700; }
+.games-deaths          { color: #888888; }
+
+.games-cell-outcome {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.games-cell-outcome.win  { color: #d4af37; }
+.games-cell-outcome.loss { color: #888888; }
+
+.games-cell-date,
+.games-cell-time {
+  font-size: 0.78rem;
   color: #c0c0c0;
   font-variant-numeric: tabular-nums;
-}
-
-.games-date small {
-  font-size: 0.58rem;
-  color: #888888;
 }
 
 /* ── Sans stats in-game ──────────────────────────────────────────────────── */
