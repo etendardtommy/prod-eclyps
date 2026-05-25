@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
+import { createPortal } from "react-dom";
 import { useStatsAuth } from "../../contexts/StatsAuthContext";
 import "./StatsPage.css";
 
@@ -135,7 +136,7 @@ function GamesModal({ player, onClose }) {
     return () => window.removeEventListener("keydown", handler);
   }, [onClose]);
 
-  return (
+  return createPortal(
     <div className="games-modal-overlay" onClick={onClose}>
       <div className="games-modal" onClick={(e) => e.stopPropagation()}>
         {/* En-tête modal */}
@@ -202,7 +203,8 @@ function GamesModal({ player, onClose }) {
           </div>
         )}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 
