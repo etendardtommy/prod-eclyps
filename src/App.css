@@ -1934,7 +1934,7 @@ main {
 .standings-name { flex: 1; font-size: 0.9rem; color: var(--white); }
 .standings-row--us .standings-name { color: var(--gold); font-weight: 700; }
 .standings-record { font-size: 0.8rem; color: var(--grey); }
-.standings-pts { font-size: 0.85rem; font-weight: 700; color: var(--white); width: 50px; text-align: right; }
+.standings-pts { font-size: 0.85rem; font-weight: 700; color: var(--white); width: 70px; text-align: right; white-space: nowrap; }
 
 .match-row {
     display: flex;
